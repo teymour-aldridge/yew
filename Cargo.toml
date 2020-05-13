@@ -28,6 +28,8 @@ members = [
 
   # dsl
   "yew-dsl",
+  # Developer tools
+  "yew-dev",
 
   # Examples
   "examples/counter",
