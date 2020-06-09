@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euxo pipefail # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 
+export YEW_DEBUGGER_PORT=80;
+export YEW_DEBUGGER_HOST=echo.websocket.org;
+
 (cd yew \
   && cargo test --target wasm32-unknown-unknown --features wasm_test,dev \
   && cargo test --doc --features doc_test,wasm_test,yaml,msgpack,cbor,toml \
