@@ -26,3 +26,5 @@ export YEW_DEBUGGER_HOST=echo.websocket.org;
 (cd yewtil && cargo test)
 
 (cd yew-components && cargo test)
+
+(cd devtools && cargo test)
