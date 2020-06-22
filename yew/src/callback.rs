@@ -112,7 +112,6 @@ impl<IN: 'static> Callback<IN> {
     }
 }
 
-#[cfg(test)]
 pub(crate) mod test_util {
     use super::*;
     use std::cell::RefCell;

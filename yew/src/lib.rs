@@ -112,6 +112,8 @@ pub mod macros {
     pub use yew_macro::Properties;
 }
 
+pub mod testing;
+
 pub mod app;
 pub mod callback;
 pub mod format;
