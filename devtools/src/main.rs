@@ -1,15 +1,9 @@
-extern crate actix;
-extern crate actix_web;
-extern crate structopt;
-
-#[cfg(test)]
-mod tests;
-
 use actix::*;
-
 use structopt::StructOpt;
 
 mod server;
+#[cfg(test)]
+mod tests;
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "dev")]

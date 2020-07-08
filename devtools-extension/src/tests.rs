@@ -230,6 +230,7 @@ fn test_delete_component() {
 }
 
 #[test]
+#[cfg(feature = "logic_test")]
 fn test_delete_nested_component() {
     let mut extension = DevToolsExtension::new();
     construct_root_node(&mut extension);

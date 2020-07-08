@@ -31,6 +31,7 @@ members = [
 
   # DevTools
   "devtools-extension",
+
   # Examples
   "examples/counter",
   "examples/crm",

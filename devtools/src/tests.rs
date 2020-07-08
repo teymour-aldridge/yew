@@ -11,16 +11,21 @@ async fn test_server_echoes_messages() {
             .service(actix_web::web::resource("/ws").to(crate::server::websocket_route))
     });
     let mut browser_framed = app.ws_at("/ws").await.unwrap();
-    browser_framed.send(actix_web_actors::ws::Message::Text("/specify/0".into()));
+    browser_framed
+        .send(actix_web_actors::ws::Message::Text("/specify/0".into()))
+        .await
+        .unwrap();
     let mut extension_framed = app.ws_at("/ws").await.unwrap();
     extension_framed
         .send(actix_web_actors::ws::Message::Text("/specify/1".into()))
-        .await;
+        .await
+        .unwrap();
     browser_framed
         .send(actix_web_actors::ws::Message::Text(
             "{\"message\": \"hello world!\"}".into(),
         ))
-        .await;
+        .await
+        .unwrap();
     assert_eq!(
         extension_framed.next().await.unwrap().unwrap(),
         actix_web_actors::ws::Frame::Text(Bytes::from_static(b"{\"message\": \"hello world!\"}"))

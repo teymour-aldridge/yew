@@ -2,11 +2,8 @@
 //!
 //! This is shipped as the browser extension.
 
-#[macro_use]
-extern crate serde;
-
+use serde::{Deserialize, Serialize};
 use yew::prelude::*;
-use yew::services::websocket::WebSocketTask;
 
 #[cfg(test)]
 mod tests;
@@ -329,7 +326,7 @@ impl DevToolsExtension {
     /// Please don't assume that the browser extension will always use JSON. The data serialization
     /// format used might be changed at any point (e.g. to a binary message format such as
     /// MessagePack or a serialization-less format such as Cap'n Proto).
-    fn extract_message(message: &String) -> Option<ComponentMessage> {
+    fn extract_message(message: &str) -> Option<ComponentMessage> {
         match serde_json::from_str(&message) {
             Ok(t) => Some(t),
             Err(e) => {
