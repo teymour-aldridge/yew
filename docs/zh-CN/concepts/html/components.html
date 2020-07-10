@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>concepts/html/components · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Create complex layouts with component hierarchies"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="concepts/html/components · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Create complex layouts with component hierarchies"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/concepts/html/components">English</a></li><li><a href="/docs/zh-TW/concepts/html/components">繁體中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">concepts/html/components</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="组件"></a><a href="#组件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>组件</h1>
+<h2><a class="anchor" aria-hidden="true" id="基础"></a><a href="#基础" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>基础</h2>
+<p>任何实现了 <code>Component</code> trait 的类型都可被用在 <code>html!</code> 宏中：</p>
+<pre><code class="hljs css language-rust">html!{
+    &lt;&gt;
+        // 没有属性
+        &lt;MyComponent /&gt;
+
+        // 具有属性
+        &lt;MyComponent prop1="lorem" prop2="ipsum" /&gt;
+
+        // 同时提供全套的 props
+        &lt;MyComponent with props /&gt;
+    &lt;/&gt;
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="嵌套"></a><a href="#嵌套" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>嵌套</h2>
+<p>如果组件的 <code>Properties</code> 中有 <code>children</code> 字段，则可以被传递子组件。</p>
+<p>{% code title=&quot;parent.rs&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+    &lt;Container&gt;
+        &lt;h4&gt;{ "Hi" }&lt;/h4&gt;
+        &lt;div&gt;{ "Hello" }&lt;/div&gt;
+    &lt;/Container&gt;
+}
+</code></pre>
+<p>{% endcode %}</p>
+<p>{% code title=&quot;container.rs&quot; %}</p>
+<pre><code class="hljs css language-rust">pub struct Container(Props);
+
+#[derive(Properties)]
+pub struct Props {
+    pub children: Children,
+}
+
+impl Component for Container {
+    type Properties = Props;
+
+    // ...
+
+    fn view(&amp;self) -&gt; Html {
+       html! {
+           &lt;div id="container"&gt;
+               { self.0.children.render() }
+           &lt;/div&gt;
+       }
+    }
+}
+</code></pre>
+<p>{% endcode %}</p>
+<h2><a class="anchor" aria-hidden="true" id="拥有-props-的嵌套子组件"></a><a href="#拥有-props-的嵌套子组件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>拥有 Props 的嵌套子组件</h2>
+<p>如果包含组件标注了 children 的类型，则可以访问和更改嵌套组件的属性。在下面的示例中，<code>List</code> 组件可以包含 <code>ListItem</code> 组件。有关此模式的真实示例，请查看 <code>yew-router</code> 的源码。有关更高级的示例，请在 yew 主仓库中查看 <code>nested-list</code> 示例代码。</p>
+<p>{% code title=&quot;parent.rs&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+    &lt;List&gt;
+        &lt;ListItem value="a" /&gt;
+        &lt;ListItem value="b" /&gt;
+        &lt;ListItem value="c" /&gt;
+    &lt;/List&gt;
+}
+</code></pre>
+<p>{% endcode %}</p>
+<p>{% code title=&quot;list.rs&quot; %}</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">List</span></span>(Props);
+
+<span class="hljs-meta">#[derive(Properties)]</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Props</span></span> {
+    <span class="hljs-keyword">pub</span> children: ChildrenWithProps&lt;ListItem&gt;,
+}
+
+<span class="hljs-keyword">impl</span> Component <span class="hljs-keyword">for</span> List {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Properties</span></span> = Props;
+
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">view</span></span>(&amp;<span class="hljs-keyword">self</span>) -&gt; Html {
+        html!{{
+            <span class="hljs-keyword">for</span> <span class="hljs-keyword">self</span>.<span class="hljs-number">0</span>.children.iter().map(|<span class="hljs-keyword">mut</span> item| {
+                item.props.value = <span class="hljs-built_in">format!</span>(<span class="hljs-string">"item-{}"</span>, item.props.value);
+                item
+            })
+        }}
+    }
+}
+</code></pre>
+<p>{% endcode %}</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#基础">基础</a></li><li><a href="#嵌套">嵌套</a></li><li><a href="#拥有-props-的嵌套子组件">拥有 Props 的嵌套子组件</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

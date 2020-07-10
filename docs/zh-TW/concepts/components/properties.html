@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>concepts/components/properties · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Parent to child communication"/><meta name="docsearch:language" content="zh-TW"/><meta property="og:title" content="concepts/components/properties · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Parent to child communication"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-TW"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>繁體中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/concepts/components/properties">English</a></li><li><a href="/docs/zh-CN/concepts/components/properties">中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">concepts/components/properties</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="properties"></a><a href="#properties" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h1>
+<p>屬性讓子元件與父元件可以互相溝通。</p>
+<h2><a class="anchor" aria-hidden="true" id="derive-macro"></a><a href="#derive-macro" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Derive macro</h2>
+<p>不要嘗試自己實作 <code>Properties</code>，而是用<code>#[derive(Properties)]</code>derive 他。</p>
+<h3><a class="anchor" aria-hidden="true" id="必填的欄位"></a><a href="#必填的欄位" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>必填的欄位</h3>
+<p>預設所有在 <code>Properties</code> struct 裡的欄位都是必填的。當必填的欄位沒有值，而元件在 <code>html!</code> 巨集中又被建立，編譯器就會報錯。如果希望欄位是可選的，可以使用 <code>#[prop_or_default]</code> 來讓該欄位有預設值。如果希望欄位預設特定值，可以使用 <code>#[prop_or_else(value)]</code> ，裡面的 value 就會是這個欄位的預設值。舉例來說，希望預設值是 <code>true</code>可以在欄位宣告上面這樣寫 <code>#[prop_or_else(true)]</code>. 通常可選的屬性，會用 <code>Option</code> ，且預設值為<code>None</code>。</p>
+<h3><a class="anchor" aria-hidden="true" id="partialeq"></a><a href="#partialeq" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PartialEq</h3>
+<p>如果可以，最好在你的屬性上面 derive <code>PartialEq</code> 。他可以避免畫面多餘的渲染，更細節的內容請參考，<strong>優化與最佳實例</strong>的區塊。</p>
+<h2><a class="anchor" aria-hidden="true" id="屬性的記憶體與速度的開銷"></a><a href="#屬性的記憶體與速度的開銷" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>屬性的記憶體與速度的開銷</h2>
+<p>在 <code>Component::view</code>,裡，你可以拿到元件狀態的參考，且用他來建立 <code>Html</code> 。但是屬性是有所有權的。這代表著為了建立屬性，並且將他們傳遞給子元件，我們必須取得被 <code>view</code> 方法拿走的所有權。 當將參考傳給元件時，可以透過隱式的複製來做到得到所有權。</p>
+<p>這意味著，每個元件，都有從父元件傳遞下來的獨有的狀態複本，且每當你重新渲染一次元件，被重新渲染的元件的所有的子元件的屬性就會被重新複製一次。</p>
+<p>代表如果你要在屬性中傳遞<em>大量</em>的資料（大於 10 KB 的字串之類的），你可能需要考慮將你的子元件變成一個回傳 <code>Html</code> 的方法，讓父元件呼叫，以避免資料被複製。</p>
+<p>如果你不需要改變傳下去的資料，你可以用 <code>Rc</code> 將資料包裝起來，這樣就會只複製參考的指針，而不是資料本身。</p>
+<h2><a class="anchor" aria-hidden="true" id="範例"></a><a href="#範例" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>範例</h2>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">use</span> std::rc::Rc;
+<span class="hljs-keyword">use</span> yew::Properties;
+
+<span class="hljs-meta">#[derive(Clone, PartialEq)]</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">LinkColor</span></span> {
+    Blue,
+    Red,
+    Green,
+    Black,
+    Purple,
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-built_in">Default</span> <span class="hljs-keyword">for</span> LinkColor {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">default</span></span>() -&gt; <span class="hljs-keyword">Self</span> {
+        <span class="hljs-comment">// 除非有指定，否則預設是藍色</span>
+        LinkColor::Blue
+    }
+}
+
+<span class="hljs-meta">#[derive(Properties, Clone, PartialEq)]</span>
+<span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">LinkProps</span></span> {
+    <span class="hljs-comment">/// 連結必須要有一個目標</span>
+    href: <span class="hljs-built_in">String</span>,
+    <span class="hljs-comment">/// 如果連結文字很大，複製字串的參考可以減少記憶體的開銷</span>
+    <span class="hljs-comment">/// 但除非效能已經成為嚴重的問題，否則通常不建議這麼做</span>
+    text: Rc&lt;<span class="hljs-built_in">String</span>&gt;,
+    <span class="hljs-comment">/// 連結的顏色</span>
+    <span class="hljs-meta">#[prop_or_default]</span>
+    color: LinkColor,
+    <span class="hljs-comment">/// 如果為 None，那 view 方法將不會指定 size</span>
+    <span class="hljs-meta">#[prop_or_default]</span>
+    size: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">u32</span>&gt;,
+    <span class="hljs-comment">/// 當沒有指定 active，預設為 true</span>
+    <span class="hljs-meta">#[prop_or(true)]</span>
+    active: <span class="hljs-built_in">bool</span>,
+}
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#derive-macro">Derive macro</a><ul class="toc-headings"><li><a href="#必填的欄位">必填的欄位</a></li><li><a href="#partialeq">PartialEq</a></li></ul></li><li><a href="#屬性的記憶體與速度的開銷">屬性的記憶體與速度的開銷</a></li><li><a href="#範例">範例</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

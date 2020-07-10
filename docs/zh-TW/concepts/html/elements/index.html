@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>concepts/html/elements · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Both HTML and SVG elements are supported"/><meta name="docsearch:language" content="zh-TW"/><meta property="og:title" content="concepts/html/elements · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Both HTML and SVG elements are supported"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-TW"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>繁體中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/concepts/html/elements">English</a></li><li><a href="/docs/zh-CN/concepts/html/elements">中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">concepts/html/elements</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="elements"></a><a href="#elements" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Elements</h1>
+<h2><a class="anchor" aria-hidden="true" id="標籤結構"></a><a href="#標籤結構" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>標籤結構</h2>
+<p>元件標籤都必須要是自封閉的標籤 <code>&lt;... /&gt;</code> 或是跟開啟標籤對應的關閉標籤。</p>
+<p>{% tabs %}
+{% tab title=&quot;Open - Close&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div id="my_div"&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;INVALID&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div id=<span class="hljs-string">"my_div"</span>&gt; <span class="hljs-comment">// &lt;- 缺少關閉標籤</span>
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Self-Closing&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;input id=<span class="hljs-string">"my_input"</span> /&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;INVALID&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;input id=<span class="hljs-string">"my_input"</span>&gt; <span class="hljs-comment">// &lt;- 缺少自封閉標籤語法</span>
+}
+</code></pre>
+<p>{% endtab %}
+{% endtabs %}</p>
+<p>{% hint style=&quot;info&quot; %}
+為了方便起見，通常需要關閉標籤的元件，也都可以用自封閉標籤表示。例如，寫 <code>html! { &lt;div class=&quot;placeholder&quot; /&gt; }</code> 是合法的。
+{% endhint %}</p>
+<h2><a class="anchor" aria-hidden="true" id="子結點"></a><a href="#子結點" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>子結點</h2>
+<p>輕鬆寫出複雜巢狀的 HTML 與 SVG 架構：</p>
+<p>{% tabs %}
+{% tab title=&quot;HTML&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+    &lt;div&gt;
+        &lt;div data-key="abc"&gt;&lt;/div&gt;
+        &lt;div class="parent"&gt;
+            &lt;span class="child" value="anything"&gt;&lt;/span&gt;
+            &lt;label for="first-name"&gt;{ "First Name" }&lt;/label&gt;
+            &lt;input type="text" id="first-name" value="placeholder" /&gt;
+            &lt;input type="checkbox" checked=true /&gt;
+            &lt;textarea value="write a story" /&gt;
+            &lt;select name="status"&gt;
+                &lt;option selected=true disabled=false value=""&gt;{ "Selected" }&lt;/option&gt;
+                &lt;option selected=false disabled=true value=""&gt;{ "Unselected" }&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;SVG&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+    &lt;svg width="149" height="147" viewBox="0 0 149 147" fill="none" xmlns="http://www.w3.org/2000/svg"&gt;
+        &lt;path d="M60.5776 13.8268L51.8673 42.6431L77.7475 37.331L60.5776 13.8268Z" fill="#DEB819"/&gt;
+        &lt;path d="M108.361 94.9937L138.708 90.686L115.342 69.8642" stroke="black" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/&gt;
+        &lt;g filter="url(#filter0_d)"&gt;
+            &lt;circle cx="75.3326" cy="73.4918" r="55" fill="#FDD630"/&gt;
+            &lt;circle cx="75.3326" cy="73.4918" r="52.5" stroke="black" stroke-width="5"/&gt;
+        &lt;/g&gt;
+        &lt;circle cx="71" cy="99" r="5" fill="white" fill-opacity="0.75" stroke="black" stroke-width="3"/&gt;
+        &lt;defs&gt;
+            &lt;filter id="filter0_d" x="16.3326" y="18.4918" width="118" height="118" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"&gt;
+                &lt;feGaussianBlur stdDeviation="2"/&gt;
+                &lt;feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"/&gt;
+            &lt;/filter&gt;
+        &lt;/defs&gt;
+    &lt;/svg&gt;
+}
+</code></pre>
+<p>{% endtab %}
+{% endtabs %}</p>
+<h2><a class="anchor" aria-hidden="true" id="classes"></a><a href="#classes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Classes</h2>
+<p>你很多方便的選項可以寫元件裡的 class：</p>
+<p>{% tabs %}
+{% tab title=&quot;Literal&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div class="container"&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Multiple&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div class="container center-align"&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Interpolated&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div class=format!("{}-container", size)&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Expression&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div class=self.classes()&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Tuple&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div class=("class-1", "class-2")&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Vector&quot; %}</p>
+<pre><code class="hljs css language-rust">html! {
+  &lt;div class=vec!["class-1", "class-2"]&gt;&lt;/div&gt;
+}
+</code></pre>
+<p>{% endtab %}
+{% endtabs %}</p>
+<h2><a class="anchor" aria-hidden="true" id="監聽"></a><a href="#監聽" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>監聽</h2>
+<p>監聽器的屬性必須要傳入一個 <code>Callback</code> ，他封裝了閉包。callback 的內容取決於，當觸發監聽事件時，你希望應用程式有什麼反應：</p>
+<p>{% tabs %}
+{% tab title=&quot;Component Handler&quot; %}</p>
+<pre><code class="hljs css language-rust">struct MyComponent {
+    link: ComponentLink&lt;Self&gt;,
+}
+
+enum Msg {
+    Click,
+}
+
+impl Component for MyComponent {
+    type Message = Msg;
+    type Properties = ();
+
+    fn create(_: Self::Properties, link: ComponentLink&lt;Self&gt;) -&gt; Self {
+        MyComponent { link }
+    }
+
+    fn update(&amp;mut self, msg: Self::Message) -&gt; ShouldRender {
+        match msg {
+            Msg::Click =&gt; {
+                // 處理點擊事件
+            }
+        }
+    }
+
+    fn view(&amp;self) -&gt; Html {
+        // 從一個元件連結中，建立一個 callback 並在元件中處理他
+        let click_callback = self.link.callback(|_: ClickEvent| Msg::Click);
+        html! {
+            &lt;button onclick=click_callback&gt;
+                { "Click me!" }
+            &lt;/button&gt;
+        }
+    }
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Agent Handler&quot; %}</p>
+<pre><code class="hljs css language-rust">struct MyComponent {
+    worker: Dispatcher&lt;MyWorker&gt;,
+}
+
+impl Component for MyComponent {
+    type Message = ();
+    type Properties = ();
+
+    fn create(_: Self::Properties, _: ComponentLink&lt;Self&gt;) -&gt; Self {
+        MyComponent {
+            worker: MyWorker::dispatcher()
+        }
+    }
+
+    fn update(&amp;mut self, _: Self::Message) -&gt; ShouldRender {
+        false
+    }
+
+    fn view(&amp;self) -&gt; Html {
+        // 從一個 worker 中建立一個 callback，並在其他的 context 中處理他
+        let click_callback = self.worker.callback(|_: ClickEvent| WorkerMsg::Process);
+        html! {
+            &lt;button onclick=click_callback&gt;
+                { "Click me!" }
+            &lt;/button&gt;
+        }
+    }
+}
+</code></pre>
+<p>{% endtab %}</p>
+<p>{% tab title=&quot;Other Cases&quot; %}</p>
+<pre><code class="hljs css language-rust">struct MyComponent;
+
+impl Component for MyComponent {
+    type Message = ();
+    type Properties = ();
+
+    fn create(_: Self::Properties, _: ComponentLink&lt;Self&gt;) -&gt; Self {
+        MyComponent
+    }
+
+    fn update(&amp;mut self, _: Self::Message) -&gt; ShouldRender {
+        false
+    }
+
+    fn view(&amp;self) -&gt; Html {
+        // 建立一個臨時的 callback
+        let click_callback = Callback::from(|| {
+            ConsoleService::new().log("clicked!");
+        });
+
+        html! {
+            &lt;button onclick=click_callback&gt;
+                { "Click me!" }
+            &lt;/button&gt;
+        }
+    }
+}
+</code></pre>
+<p>{% endtab %}
+{% endtabs %}</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#標籤結構">標籤結構</a></li><li><a href="#子結點">子結點</a></li><li><a href="#classes">Classes</a></li><li><a href="#監聽">監聽</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>getting-started/choose-web-library · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="# 选择 web-sys 还是 stdweb"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="getting-started/choose-web-library · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="# 选择 web-sys 还是 stdweb"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/getting-started/choose-web-library">English</a></li><li><a href="/docs/zh-TW/getting-started/choose-web-library">繁體中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">getting-started/choose-web-library</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="选择-web-sys-还是-stdweb"></a><a href="#选择-web-sys-还是-stdweb" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>选择 web-sys 还是 stdweb</h1>
+<h2><a class="anchor" aria-hidden="true" id="简介"></a><a href="#简介" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>简介</h2>
+<p>Yew 应用程序可以通过 <a href="https://docs.rs/web-sys"><code>web-sys</code></a> 或者 <a href="https://docs.rs/stdweb"><code>stdweb</code></a> 来构建。这两个 crates 提供了 Rust 和 Web API 之间的绑定。当把 <code>yew</code> 添加到你的 cargo 依赖时，你需要选择它们其中之一：</p>
+<p>{% code title=&quot;Cargo.toml&quot; %}</p>
+<pre><code class="hljs css language-rust"># 选择 `web-sys`
+yew = { version = <span class="hljs-string">"0.13"</span>, features = [<span class="hljs-string">"web_sys"</span>] }
+
+# 选择 `stdweb`
+yew = { version = <span class="hljs-string">"0.13"</span>, features = [<span class="hljs-string">"std_web"</span>] }
+</code></pre>
+<p>{% endcode %}</p>
+<p>我们建议选择 <code>web-sys</code>，因为它是由 <a href="https://rustwasm.github.io/">Rust / Wasm 工作组</a> 提供支持。</p>
+<h2><a class="anchor" aria-hidden="true" id="示例用法"></a><a href="#示例用法" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>示例用法</h2>
+<pre><code class="hljs css language-rust"><span class="hljs-comment">// web-sys</span>
+<span class="hljs-keyword">let</span> window: web_sys::Window = web_sys::window().expect(<span class="hljs-string">"window not available"</span>);
+window.alert_with_message(<span class="hljs-string">"hello from wasm!"</span>).expect(<span class="hljs-string">"alert failed"</span>);
+
+<span class="hljs-comment">// stdweb</span>
+<span class="hljs-keyword">let</span> window: stdweb::web::Window = stdweb::web::window();
+window.alert(<span class="hljs-string">"hello from wasm!"</span>);
+
+<span class="hljs-comment">// stdweb 搭配 js! 宏</span>
+<span class="hljs-keyword">use</span> stdweb::js;
+<span class="hljs-keyword">use</span> stdweb::unstable::TryFrom;
+<span class="hljs-keyword">use</span> stdweb::web::Window;
+
+<span class="hljs-keyword">let</span> window_val: stdweb::Value = js!{ <span class="hljs-keyword">return</span> window; }; <span class="hljs-comment">// &lt;- 里面使用 JS 语法</span>
+<span class="hljs-keyword">let</span> window = Window::try_from(window_val).expect(<span class="hljs-string">"conversion to window failed"</span>);
+window.alert(<span class="hljs-string">"hello from wasm!"</span>);
+</code></pre>
+<p>两个 crate 的 API 略有不用，但他们的目标大致相同，功能相似。</p>
+<h2><a class="anchor" aria-hidden="true" id="选择其中之一"></a><a href="#选择其中之一" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>选择其中之一</h2>
+<p>当为你的应用程序选择使用 <code>web-sys</code> 还是 <code>stdweb</code> 时，有几个不同的角度需要考虑。注意，可以在一个应用程序中同时使用两者，但是为了最小化编译的 <code>.wasm</code> 二进制体积，最好选择其中之一。</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left"></th>
+      <th style="text-align:left"><code>web-sys</code>
+      </th>
+      <th style="text-align:left"><code>stdweb</code>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">&#x9879;&#x76EE;&#x72B6;&#x6001;</td>
+      <td style="text-align:left">&#x7531;<a href="https://rustwasm.github.io/">Rust / Wasm &#x5DE5;&#x4F5C;&#x7EC4;</a>&#x79EF;&#x6781;&#x7EF4;&#x62A4;</td>
+      <td
+      style="text-align:left">&#x8D85;&#x8FC7;&#x56DB;&#x4E2A;&#x6708;&#x6CA1;&#x6709; Github &#x6D3B;&#x52A8;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">Web API &#x8986;&#x76D6;&#x7387;</td>
+      <td style="text-align:left">Rust API &#x662F;&#x4ECE; Web IDL &#x89C4;&#x8303;&#x81EA;&#x52A8;&#x751F;&#x6210;&#xFF0C;&#x56E0;&#x6B64;&#x7406;&#x8BBA;&#x4E0A;&#x6709;
+        100% &#x7684;&#x8986;&#x76D6;&#x7387;&#x3002;</td>
+      <td style="text-align:left">&#x6D4F;&#x89C8;&#x5668; API &#x662F;&#x6839;&#x636E;&#x9700;&#x6C42;&#x7531;&#x793E;&#x533A;&#x6DFB;&#x52A0;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">Rust API &#x8BBE;&#x8BA1;</td>
+      <td style="text-align:left">&#x91C7;&#x53D6;&#x4FDD;&#x5B88;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x4E3A;&#x5927;&#x591A;&#x6570;
+        API &#x8C03;&#x7528;&#x8FD4;&#x56DE; <code>Result</code>
+      </td>
+      <td style="text-align:left">&#x901A;&#x5E38;&#x62D2;&#x7EDD;&#x8FD4;&#x56DE; <code>Result</code> &#x800C;&#x66F4;&#x503E;&#x5411;&#x4E8E;&#x4F7F;&#x7528;
+        panic&#x3002;&#x4F8B;&#x5982;&#xFF0C;&#x5728; worker &#x4E2D;&#x8C03;&#x7528; <code>stdweb::web::window()</code> &#x5C06;
+        panic&#x3002;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x652F;&#x6301;&#x7684;&#x6784;&#x5EFA;&#x5DE5;&#x5177;</td>
+      <td style="text-align:left">
+        <ul>
+          <li><code>wasm-bindgen</code>
+          </li>
+          <li><code>wasm-pack</code>
+          </li>
+        </ul>
+      </td>
+      <td style="text-align:left">
+        <ul>
+          <li><code>cargo-web</code>
+          </li>
+          <li><code>wasm-bindgen</code>
+          </li>
+          <li><code>wasm-pack</code>
+          </li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x652F;&#x6301;&#x751F;&#x6210;&#x7684;&#x76EE;&#x6807;&#x4EE3;&#x7801;</td>
+      <td
+      style="text-align:left">
+        <ul>
+          <li><code>wasm32-unknown-unknown</code>
+          </li>
+        </ul>
+        </td>
+        <td style="text-align:left">
+          <ul>
+            <li><code>wasm32-unknown-unknown</code>
+            </li>
+            <li><code>wasm32-unknown-emscripten</code>
+            </li>
+            <li><code>asmjs-unknown-emscripten</code>
+            </li>
+          </ul>
+        </td>
+    </tr>
+  </tbody>
+</table>有关更多挑选构建工具的信息，请参阅 [Wasm 构建工具](project-setup/#wasm-build-tools) 指南。
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#简介">简介</a></li><li><a href="#示例用法">示例用法</a></li><li><a href="#选择其中之一">选择其中之一</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

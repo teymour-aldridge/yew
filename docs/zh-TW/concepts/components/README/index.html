@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>concepts/components/README · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Components and their lifecycle hooks"/><meta name="docsearch:language" content="zh-TW"/><meta property="og:title" content="concepts/components/README · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Components and their lifecycle hooks"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-TW"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>繁體中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/concepts/components/README">English</a></li><li><a href="/docs/zh-CN/concepts/components/README">中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">concepts/components/README</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="元件"></a><a href="#元件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>元件</h1>
+<h2><a class="anchor" aria-hidden="true" id="什麼是元件？"></a><a href="#什麼是元件？" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>什麼是元件？</h2>
+<p>元件是 Yew 的基石。他們管理自己的狀態，可以渲染自己成為 DOM。元件可以透過實作，描述元件生命周期的 <code>Component</code> trait 來建立。</p>
+<h2><a class="anchor" aria-hidden="true" id="生命周期"></a><a href="#生命周期" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>生命周期</h2>
+<p>{% hint style=&quot;info&quot; %}
+<code>歡迎來貢獻我們的文件：</code> <a href="https://github.com/yewstack/docs/issues/22">Add a diagram of the component lifecycle</a>
+{% endhint %}</p>
+<h2><a class="anchor" aria-hidden="true" id="生命周期的方法"></a><a href="#生命周期的方法" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>生命周期的方法</h2>
+<h3><a class="anchor" aria-hidden="true" id="create"></a><a href="#create" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create</h3>
+<p>當一個元件被建立，他會接收從父元件，也就是 <code>ComponentLink</code> ，傳下來的屬性。 這些屬性用來初始化元件的狀態，此外，「link」可以用來註冊回調函式或傳訊息給元件。</p>
+<p>通常，你的元件 struct 會儲存 props 與 link，就像下面的例子：</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">MyComponent</span></span> {
+    props: Props,
+    link: ComponentLink&lt;<span class="hljs-keyword">Self</span>&gt;,
+}
+
+<span class="hljs-keyword">impl</span> Component <span class="hljs-keyword">for</span> MyComponent {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Properties</span></span> = Props;
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">create</span></span>(props: Self::Properties, link: ComponentLink&lt;<span class="hljs-keyword">Self</span>&gt;) -&gt; <span class="hljs-keyword">Self</span> {
+        MyComponent { props, link }
+    }
+
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="view"></a><a href="#view" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>View</h3>
+<p>元件會在 <code>view()</code> 方法中宣告佈局。Yew 提供 <code>html!</code> 巨集來宣告 HTML 合 SVG 的結點，包含他們的監聽事件與子結點。這個巨集扮演像是 React 的 JSX 的角色，但是是使用 Rust 的表達式，而不是 JavaScript 的。</p>
+<pre><code class="hljs css language-rust">impl Component for MyComponent {
+    // ...
+
+    fn view(&amp;self) -&gt; Html {
+        let onclick = self.link.callback(|_| Msg::Click);
+        html! {
+            &lt;button onclick=onclick&gt;{ self.props.button_text }&lt;/button&gt;
+        }
+    }
+}
+</code></pre>
+<p>更多使用細節，請參考 <code>html!</code> 教學：</p>
+<p>{% page-ref page=&quot;../html/&quot; %}</p>
+<h3><a class="anchor" aria-hidden="true" id="rendered"></a><a href="#rendered" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rendered</h3>
+<p><code>rendered()</code> 生命周期的方法會，在 <code>view()</code> 處理完並且 Yew 渲染完你的元件之後，與瀏覽器刷新頁面之前，被呼叫。一個元件可能希望實作這個方法，去執行只能在元件被渲染完元素才能做的事情。 你可以透過 <code>first_render</code> 變數來確認這個元件是不是第一次被渲染。</p>
+<pre><code class="hljs css language-rust">use stdweb::web::html_element::InputElement;
+use stdweb::web::IHtmlElement;
+use yew::prelude::*;
+
+pub struct MyComponent {
+    node_ref: NodeRef,
+}
+
+impl Component for MyComponent {
+    // ...
+
+    fn view(&amp;self) -&gt; Html {
+        html! {
+            &lt;input ref=self.node_ref.clone() type="text" /&gt;
+        }
+    }
+
+    fn rendered(&amp;mut self, first_render: bool) {
+        if first_render {
+            if let Some(input) = self.node_ref.try_into::&lt;InputElement&gt;() {
+                input.focus();
+            }
+        }
+    }
+}
+</code></pre>
+<p>{% hint style=&quot;info&quot; %}
+注意，這個生命周期方法，不是一定要被實作，預設的行為是不做任何事情。
+{% endhint %}</p>
+<h3><a class="anchor" aria-hidden="true" id="update"></a><a href="#update" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Update</h3>
+<p>元件是可動態更新且可以註冊接收非同步的訊息。 <code>update()</code> 生命周期方法會被每個訊息呼叫。他基於訊息是什麼，來允許元件更新自己，且會決定是否需要重新渲染。 訊息可以被 HTML 元素的監聽器觸發，或被子元件、Agents、Services 或 Futures 傳送。</p>
+<p><code>update()</code> 應用範例：</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Msg</span></span> {
+    SetInputEnabled(<span class="hljs-built_in">bool</span>)
+}
+
+<span class="hljs-keyword">impl</span> Component <span class="hljs-keyword">for</span> MyComponent {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Message</span></span> = Msg;
+
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">update</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, msg: Self::Message) -&gt; ShouldRender {
+       <span class="hljs-keyword">match</span> msg {
+           Msg::SetInputEnabled(enabled) =&gt; {
+               <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.input_enabled != enabled {
+                   <span class="hljs-keyword">self</span>.input_enabled = enabled;
+                   <span class="hljs-literal">true</span> <span class="hljs-comment">// 重新渲染</span>
+               } <span class="hljs-keyword">else</span> {
+                   <span class="hljs-literal">false</span>
+               }
+           }
+       }
+    }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="change"></a><a href="#change" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change</h3>
+<p>元件可能會被他的父元件重新渲染。當他被父元件重新渲染時，他會收到新的屬性，然後決定要不要再渲染一次。 這設計是讓父元件透過便於跟子元件溝通。</p>
+<p>一個簡單的實作方式像：</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">impl</span> Component <span class="hljs-keyword">for</span> MyComponent {
+    <span class="hljs-comment">// ...</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">change</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, props: Self::Properties) -&gt; ShouldRender {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.props != props {
+            <span class="hljs-keyword">self</span>.props = props;
+            <span class="hljs-literal">true</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">false</span>
+        }
+    }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="destroy"></a><a href="#destroy" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Destroy</h3>
+<p>當元件從 DOM 上被解除掛載，Yew 會呼叫 <code>destroy()</code> 生命周期方法以提供任何需要清理的操作。這個方法是不一定要被實作的，預設不會做設任何事。</p>
+<h2><a class="anchor" aria-hidden="true" id="相關的型別"></a><a href="#相關的型別" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>相關的型別</h2>
+<p><code>Component</code> trait 有兩個相關的型別：<code>Message</code> 與 <code>Properties</code>。</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">impl</span> Component <span class="hljs-keyword">for</span> MyComponent {
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Message</span></span> = Msg;
+    <span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">Properties</span></span> = Props;
+
+    <span class="hljs-comment">// ...</span>
+}
+</code></pre>
+<p><code>Message</code> 負責各式各樣的訊息，他可能被元件處理去觸發各種影響。舉例來說，你可能有一個 <code>Click</code> 的訊息，他會觸發 API 請求，或是切換 UI 元件的樣貌。下面是一個常見的實作，在你的元件模組中，創建一個叫作 <code>Msg</code> 的 enum，然後把他當作元件裡的 Message 型別。通常 message 會縮寫成 msg。</p>
+<pre><code class="hljs css language-rust"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Msg</span></span> {
+    Click,
+}
+</code></pre>
+<p><code>Properties</code> 代表要從父員件傳遞到子元件的資訊。這個型別必須實作 <code>Properties</code> trait （通常會 deriving 他）並且可以決定某個屬性是必要的屬性，或是可選的屬性。這個型別會在創建元件的時候，或是更新元件的時候被使用到。常見的實作會在你的元件模組中，建立一個叫作 <code>Props</code>  的 struct，然後把他當作元件的<code>Properties</code> 型別。通常 properties 或縮寫成 props。因為屬性是從父原件被傳下來的，所以應用程式中的根元件的 <code>Properties</code> 原則上都是 <code>()</code>。如果你希望你的根元件有特定的屬性，可以使用 <code>App::mount_with_props</code> 的方法。</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#什麼是元件？">什麼是元件？</a></li><li><a href="#生命周期">生命周期</a></li><li><a href="#生命周期的方法">生命周期的方法</a><ul class="toc-headings"><li><a href="#create">Create</a></li><li><a href="#view">View</a></li><li><a href="#rendered">Rendered</a></li><li><a href="#update">Update</a></li><li><a href="#change">Change</a></li><li><a href="#destroy">Destroy</a></li></ul></li><li><a href="#相關的型別">相關的型別</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>getting-started/build-a-sample-app · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="# Build a Sample App"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="getting-started/build-a-sample-app · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="# Build a Sample App"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/en"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>English</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/zh-CN/getting-started/build-a-sample-app">中文</a></li><li><a href="/docs/zh-TW/getting-started/build-a-sample-app">繁體中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">getting-started/build-a-sample-app</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="build-a-sample-app"></a><a href="#build-a-sample-app" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Build a Sample App</h1>
+<p>First create a new Rust library (<strong>important:</strong> create a <em>library</em>, not a <em>binary</em> by passing the <code>--lib</code> flag):</p>
+<pre><code class="hljs css language-bash">cargo new --lib yew-app &amp;&amp; <span class="hljs-built_in">cd</span> yew-app
+</code></pre>
+<p>Add <code>yew</code> and <code>wasm-bindgen</code> to your dependencies (refer <a href="https://docs.rs/yew">here</a> for the latest version)</p>
+<p>{% code title=&quot;Cargo.toml&quot; %}</p>
+<pre><code class="hljs css language-text">[package]
+name = "yew-app"
+version = "0.1.0"
+authors = ["Yew App Developer <name@example.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+yew = "0.17"
+wasm-bindgen = "0.2"
+</code></pre>
+<p>{% endcode %}</p>
+<p>Copy the following template into your <code>src/lib.rs</code> file:</p>
+<p>{% code title=&quot;src/lib.rs&quot; %}</p>
+<pre><code class="hljs css language-rust">use wasm_bindgen::prelude::*;
+use yew::prelude::*;
+
+struct Model {
+    link: ComponentLink&lt;Self&gt;,
+    value: i64,
+}
+
+enum Msg {
+    AddOne,
+}
+
+impl Component for Model {
+    type Message = Msg;
+    type Properties = ();
+    fn create(_: Self::Properties, link: ComponentLink&lt;Self&gt;) -&gt; Self {
+        Self {
+            link,
+            value: 0,
+        }
+    }
+
+    fn update(&amp;mut self, msg: Self::Message) -&gt; ShouldRender {
+        match msg {
+            Msg::AddOne =&gt; self.value += 1
+        }
+        true
+    }
+
+    fn change(&amp;mut self, _props: Self::Properties) -&gt; ShouldRender {
+        // Should only return "true" if new properties are different to
+        // previously received properties.
+        // This component has no properties so we will always return "false".
+        false
+    }
+
+    fn view(&amp;self) -&gt; Html {
+        html! {
+            &lt;div&gt;
+                &lt;button onclick=self.link.callback(|_| Msg::AddOne)&gt;{ "+1" }&lt;/button&gt;
+                &lt;p&gt;{ self.value }&lt;/p&gt;
+            &lt;/div&gt;
+        }
+    }
+}
+
+#[wasm_bindgen(start)]
+pub fn run_app() {
+    App::&lt;Model&gt;::new().mount_to_body();
+}
+</code></pre>
+<p>{% endcode %}</p>
+<p>This template sets up your root <code>Component</code>, called <code>Model</code> which shows a button that updates itself when you click it. Take special note of <code>App::&lt;Model&gt;::new().mount_to_body()</code> inside <code>main()</code> which starts your app and mounts it to the page's <code>&lt;body&gt;</code> tag. If you would like to start your application with any dynamic properties, you can instead use <code>App::&lt;Model&gt;::new().mount_to_body_with_props(..)</code>.</p>
+<p>Finally, add an <code>index.html</code> file into a new folder named <code>static</code> in your app.</p>
+<pre><code class="hljs css language-bash">mkdir static
+</code></pre>
+<p>{% code title=&quot;index.html&quot; %}</p>
+<pre><code class="hljs css language-markup"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Yew Sample App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"module"</span>&gt;</span><span class="javascript">
+            <span class="hljs-keyword">import</span> init <span class="hljs-keyword">from</span> <span class="hljs-string">"./wasm.js"</span>
+            init()
+        </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+<p>{% endcode %}</p>
+<h2><a class="anchor" aria-hidden="true" id="run-your-app"></a><a href="#run-your-app" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run your App!</h2>
+<p>Using <a href="https://rustwasm.github.io/docs/wasm-pack/"><code>wasm-pack</code></a> is the preferred way to get up and running. If you haven't already, install <code>wasm-pack</code> with <code>cargo install wasm-pack</code> and then build and start a development server by running:</p>
+<pre><code class="hljs css language-bash">wasm-pack build --target web --out-name wasm --out-dir ./static
+</code></pre>
+<p><code>wasm-pack</code> generates a bundle in the <code>./static</code> directory with your app's compiled WebAssembly along with a JavaScript wrapper which will load your application's WebAssembly binary and run it.</p>
+<p>Then, use your favorite web server to server the files under <code>./static</code>. For example:</p>
+<pre><code class="hljs css language-bash">cargo +nightly install miniserve
+miniserve ./static --index index.html
+</code></pre>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#run-your-app">Run your App!</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

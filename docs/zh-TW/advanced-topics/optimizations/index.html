@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>advanced-topics/optimizations · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Make your app faster"/><meta name="docsearch:language" content="zh-TW"/><meta property="og:title" content="advanced-topics/optimizations · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Make your app faster"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-TW"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>繁體中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/advanced-topics/optimizations">English</a></li><li><a href="/docs/zh-CN/advanced-topics/optimizations">中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">advanced-topics/optimizations</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="優化與最佳實例"></a><a href="#優化與最佳實例" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>優化與最佳實例</h1>
+<h2><a class="anchor" aria-hidden="true" id="neq_assign"></a><a href="#neq_assign" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>neq_assign</h2>
+<p>當元件從父元件接收到屬性時， <code>change</code> 的方法就會被呼叫。除了讓你更新元件的狀態，也讓你回傳，決定元件是否要在屬性改變時，重新渲染自己的布林值 <code>ShouldRender</code> 。</p>
+<p>重新渲染是很浪費效能的，儘可能避免這麼做。一般來說，只有在屬性真的改變時，才重新渲染。下面的程式碼是體現這個原則的例子，當屬性改變時，才回傳 <code>true</code>：</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">use</span> yew::ShouldRender;
+
+<span class="hljs-meta">#[derive(PartialEq)]</span>
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">ExampleProps</span></span>;
+
+<span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">Example</span></span> {
+    props: ExampleProps,
+};
+
+<span class="hljs-keyword">impl</span> Example {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">change</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, props: ExampleProps) -&gt; ShouldRender {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.props != props {
+            <span class="hljs-keyword">self</span>.props = props;
+            <span class="hljs-literal">true</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">false</span>
+        }
+    }
+}
+</code></pre>
+<p>但我們可以走的更遠！這六行的模板，使用一個 trait 和一個 實作了 <code>PartialEq</code> 的 blanket implementation ，可以被縮短至一行。請參考<a href="https://docs.rs/yewtil/*/yewtil/trait.NeqAssign.html">這裡</a>， <code>yewtil</code> 的 crate 裡的 <code>NeqAssign</code> trait。</p>
+<h2><a class="anchor" aria-hidden="true" id="rc"></a><a href="#rc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RC</h2>
+<p>為了避免重新渲染時，複製大量的資料來建立屬性，我們可以使用智慧指針來讓程式只複製指針。如果你使用 <code>Rc&lt;_&gt;</code> 來封裝你的屬性，而不是未封裝的值，你可以使用 <code>Rc::make_mut</code>，去複製與存取你想要改變的資料的可變參考，這做到了延遲複製，直到你需要更動子元件的資料。透過避免複製直到有值改變，子元件可以在 <code>Component::change</code> 拒絕與他狀態中的屬性相同值的屬性，而且這樣不會有任何效能成本。另外，這個方式，資料必須在與子元件比較與被拒絕之前，被複製進父元件的屬性中。</p>
+<p>這個優化最那些無法 <code>Copy</code> 的資料型別最有用。如果你可以輕易複製你的資料，那把資料放進智慧指針裡面似乎就沒有這麼值得。對於那些包含很多像是 <code>Vec</code> 、 <code>HashMap</code> 與 <code>String</code> 的結構，這個優化對他們會更值得。</p>
+<p>如果子元件幾乎不會更新值，那這個優化效果會很好，甚至如果父元件也很少更新，那效果會更好。上面的情況，使在純元件中使用 <code>Rc&lt;_&gt;s</code> 是一個封裝屬性值很好的選擇。</p>
+<h2><a class="anchor" aria-hidden="true" id="view-方法"></a><a href="#view-方法" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>View 方法</h2>
+<p>出於程式碼的可讀性，通常會寫方法包裝複雜的 <code>html!</code>，這樣你可以避免巢狀的 HTML 造成過多的向右縮排。</p>
+<h2><a class="anchor" aria-hidden="true" id="純元件函數式元件"></a><a href="#純元件函數式元件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>純元件/函數式元件</h2>
+<p>純元件 是一種不會改變自己狀態的元件，他們只單純顯示內容或是向普通可變的元件傳送訊息。他們和 view 方法不同的地方在於們可以在 <code>html!</code> 巨集中使用，語法會像（<code>&lt;SomePureComponent /&gt;</code>），而不是表達式語法（<code>{some_view_function()}</code>），而且根據他們的實作方式，他們可以被 memoized，這樣可以套用前面所述的 <code>neq_assign</code> 的邏輯避免重新渲染。</p>
+<p>Yew 本身不支援純元件或是函數式元件，但是你可以透過 external crates 使用。</p>
+<p>函數式元件還不存在，但是理論上純元件可以透過巨集與宣告方法產生。</p>
+<h2><a class="anchor" aria-hidden="true" id="keyed-dom-nodes-when-they-arrive"></a><a href="#keyed-dom-nodes-when-they-arrive" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Keyed DOM nodes when they arrive</h2>
+<h2><a class="anchor" aria-hidden="true" id="使用-cargo-workspaces--加速編譯"></a><a href="#使用-cargo-workspaces--加速編譯" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使用 Cargo Workspaces  加速編譯</h2>
+<p>Yew  最大的缺點就是花太多時間在編譯上了。編譯時間似乎和 <code>html!</code> 巨集中的程式碼質量相同。 對於小專案來說，這應該不是什麼大問題，但是對於有很多頁面的大型網頁應用程式來說，就必須要將程式碼封裝成很多 crates 以減少編譯所花的時間。</p>
+<p>你應該將路由與頁面區塊封裝成一個 main crate，然後將共用的程式碼與元件封裝成另一個 crate，將每個頁面會用到的不同的元件，各自封裝到不同的 crate 中，或是只產生 <code>Html</code> 的大方法中。最好的狀況，你只需要重新編譯你 main crate 與修改的頁面的 crate 的程式碼；而最壞的情況，你編輯了共用的 crate，你就必須重新編譯所有依賴這個共用 crate 的程式碼。</p>
+<p>如果你的 main crate 太過龐大，或是你希望快速迭代深層巢狀的頁面（一個頁面渲染另一個頁面的頂層），你可以使用範例的 crate ，在一個簡單的主頁面上編輯你未完成的元件。</p>
+<h2><a class="anchor" aria-hidden="true" id="編譯大小的優化-a-idbuild-size-optimizationa"></a><a href="#編譯大小的優化-a-idbuild-size-optimizationa" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>編譯大小的優化 <a id="build-size-optimization"></a></h2>
+<ul>
+<li>優化 Rust 的程式碼
+<ul>
+<li><code>wee_alloc</code> （使用輕量的分配器）</li>
+<li><code>cargo.toml</code> （定義釋出的設定檔）</li>
+</ul></li>
+<li>使用 <code>wasm-opt</code> 優化 wasm 程式碼</li>
+</ul>
+<p>更多關於程式碼大小的資訊，請參考： <a href="https://rustwasm.github.io/book/reference/code-size.html#optimizing-builds-for-code-size">rustwasm book</a></p>
+<h3><a class="anchor" aria-hidden="true" id="wee_alloc"></a><a href="#wee_alloc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>wee_alloc</h3>
+<p><a href="https://github.com/rustwasm/wee_alloc">wee_alloc</a> 是一個比一般用在 Rust 二進制檔中的分配器更輕量的分配器。用他取代預設的分配器，可以讓 WASM 的檔案大小更小，但是會造成速度和記憶體的開銷變大。</p>
+<p>但比起檔案大小，速度和記憶體的開銷比較次要。更小的檔案大小意味著你的頁面可以載入的更快，因此我們通常建議你使用這個分配器作為預設的分配器，除分你的專案有很多吃重的記憶體分配工作。</p>
+<pre><code class="hljs css language-rust"><span class="hljs-comment">// 使用 `wee_alloc` 作為全局的分配器</span>
+<span class="hljs-meta">#[global_allocator]</span>
+<span class="hljs-keyword">static</span> ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="cargotoml-a-idcargo-tomla"></a><a href="#cargotoml-a-idcargo-tomla" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cargo.toml <a id="cargo-toml"></a></h3>
+<p>你可以設定你的發行版本更小的檔案大小，透過設定 <code>Cargo.toml</code> 的 <code>[profile.release]</code> 。</p>
+<p><a href="https://doc.rust-lang.org/cargo/reference/profiles.html">Rust profiles documentation</a></p>
+<pre><code class="hljs css language-rust">[profile.release]
+# less code to include into binary
+panic = <span class="hljs-symbol">'abort</span>' 
+# optimization over all codebase ( better optimization, slower build )
+codegen-units = <span class="hljs-number">1</span>
+# optimization <span class="hljs-keyword">for</span> size ( more aggresive )
+opt-level = <span class="hljs-string">'z'</span> 
+# optimization <span class="hljs-keyword">for</span> size 
+# opt-level = <span class="hljs-string">'s'</span> 
+# link time optimization using using whole-program analysis
+lto = <span class="hljs-literal">true</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="wasm-opt-a-idwasm-opta"></a><a href="#wasm-opt-a-idwasm-opta" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>wasm-opt <a id="wasm-opt"></a></h3>
+<p>更多優化 <code>wasm</code> 程式碼大小的方法。</p>
+<p>wasm-opt 資訊： <a href="https://github.com/WebAssembly/binaryen">binaryen project</a></p>
+<p>Rust Wasm 中有一個關於減少 WASM 二進位檔大小的章節：<a href="https://rustwasm.github.io/book/game-of-life/code-size.html">Shrinking .wasm size</a></p>
+<ul>
+<li>使用<code>wasm-pack</code> 預設在發行版本編譯時優化 <code>wasm</code> 程式碼</li>
+<li>直接在 wasm 檔案上使用 <code>wasm-opt</code> 。</li>
+</ul>
+<pre><code class="hljs css language-rust">wasm-opt wasm_bg.wasm -Os -o wasm_bg_opt.wasm
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="編譯-yewexamples--中-最小的例子-a-idbuild-size-of-minimal-example-in-yew-examplesa"></a><a href="#編譯-yewexamples--中-最小的例子-a-idbuild-size-of-minimal-example-in-yew-examplesa" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>編譯 yew/examples/  中 最小的例子 <a id="build-size-of-minimal-example-in-yew-examples"></a></h4>
+<p>注意： <code>wasm-pack</code> 包含對 Rust 與 wasm 程式碼的優化。而<code>wasm-bindgen</code> 只是一個單純的例子，沒有對 <code>Rust</code> 做任何優化。</p>
+<table>
+<thead>
+<tr><th style="text-align:left">used tool</th><th style="text-align:left">size</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align:left">wasm-bindgen</td><td style="text-align:left">158KB</td></tr>
+<tr><td style="text-align:left">wasm-binggen + wasm-opt -Os</td><td style="text-align:left">116KB</td></tr>
+<tr><td style="text-align:left">wasm-pack</td><td style="text-align:left">99KB</td></tr>
+</tbody>
+</table>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#neq_assign">neq_assign</a></li><li><a href="#rc">RC</a></li><li><a href="#view-方法">View 方法</a></li><li><a href="#純元件函數式元件">純元件/函數式元件</a></li><li><a href="#keyed-dom-nodes-when-they-arrive">Keyed DOM nodes when they arrive</a></li><li><a href="#使用-cargo-workspaces--加速編譯">使用 Cargo Workspaces  加速編譯</a></li><li><a href="#編譯大小的優化-a-idbuild-size-optimizationa">編譯大小的優化 <a id="build-size-optimization"></a></a><ul class="toc-headings"><li><a href="#wee_alloc">wee_alloc</a></li><li><a href="#cargotoml-a-idcargo-tomla">Cargo.toml <a id="cargo-toml"></a></a></li><li><a href="#wasm-opt-a-idwasm-opta">wasm-opt <a id="wasm-opt"></a></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

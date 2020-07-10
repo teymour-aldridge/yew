@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="zh-TW"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>getting-started/project-setup/README · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Set yourself up for success"/><meta name="docsearch:language" content="zh-TW"/><meta property="og:title" content="getting-started/project-setup/README · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Set yourself up for success"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-TW"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>繁體中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/getting-started/project-setup/README">English</a></li><li><a href="/docs/zh-CN/getting-started/project-setup/README">中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">getting-started/project-setup/README</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="專案設定"></a><a href="#專案設定" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>專案設定</h1>
+<h2><a class="anchor" aria-hidden="true" id="rust"></a><a href="#rust" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rust</h2>
+<p>首先，你的電腦裡必須要安裝 Rust。請參考<a href="https://www.rust-lang.org/tools/install">官網的教學</a>安裝 Rust 與 <code>cargo</code> 這個套件管理工具。</p>
+<h2><a class="anchor" aria-hidden="true" id="wasm-編譯工具"></a><a href="#wasm-編譯工具" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><strong>Wasm 編譯工具</strong></h2>
+<p>我們需要額外的工具來增加 WebAssembly 與 JavaScript 的互操作性。此外，根據你選擇的工具，他們可以產生當你的應用程式運行在瀏覽器時， <code>.wasm</code> 檔案所需要的 JavaScript 程式碼，減少佈署與打包的麻煩。</p>
+<h3><a class="anchor" aria-hidden="true" id="wasm-packhttpsrustwasmgithubiodocswasm-pack"></a><a href="#wasm-packhttpsrustwasmgithubiodocswasm-pack" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="https://rustwasm.github.io/docs/wasm-pack/"><strong><code>wasm-pack</code></strong></a></h3>
+<p>一套 CLI 工具，由 Rust/Wasm Working Group 為了編譯並打包 WebAssembly 所開發的。最好與 Webpack 的 <a href="https://github.com/wasm-tool/wasm-pack-plugin"><code>wasm-pack-plugin</code></a> 搭配使用。</p>
+<p>{% page-ref page=&quot;using-wasm-pack.md&quot; %}</p>
+<h3><a class="anchor" aria-hidden="true" id="wasm-bindgenhttpsrustwasmgithubiodocswasm-bindgen"></a><a href="#wasm-bindgenhttpsrustwasmgithubiodocswasm-bindgen" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="https://rustwasm.github.io/docs/wasm-bindgen/"><strong><code>wasm-bindgen</code></strong></a></h3>
+<p>同時是套件，也是 CLI 工具，並由 Rust / Wasm Working Group 開發。他是一套較底層的工具（通常是 <code>wasm-pack</code> 內部使用），用以增加 JavaScript 與 WebAssembly 的互操作性。我們不建議直接使用 <code>wasm-bindgen</code>，因為你需要多寫一些 JavaScript 的程式碼來引入你的 WebAssembly 二進位檔案。雖然如此，你仍然可以使用 wasm-bindgen，更多資訊請參考 <a href="https://rustwasm.github.io/docs/wasm-bindgen/"><strong><code>wasm-bindgen</code> guide</strong></a><strong>。</strong></p>
+<p>{% page-ref page=&quot;using-wasm-bindgen.md&quot; %}</p>
+<h3><a class="anchor" aria-hidden="true" id="cargo-webhttpsgithubcomkoutecargo-web"></a><a href="#cargo-webhttpsgithubcomkoutecargo-web" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="https://github.com/koute/cargo-web"><strong><code>cargo-web</code></strong></a></h3>
+<p>在 <code>wasm-pack</code> 與 <code>wasm-bindgen</code> 出來之前，這是我們的首選工具。在安裝與執行方面，他的速度仍是最快的，我們推薦你安裝他去執行我們的那些還沒有使用 <code>wasm-pack</code> 的範例。</p>
+<p>{% page-ref page=&quot;using-cargo-web.md&quot; %}</p>
+<h3><a class="anchor" aria-hidden="true" id="比較"></a><a href="#比較" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>比較</h3>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left"></th>
+      <th style="text-align:left"><code>wasm-pack</code>
+      </th>
+      <th style="text-align:left"><code>wasm-bindgen</code>
+      </th>
+      <th style="text-align:left"><code>cargo-web</code>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">&#x5C08;&#x6848;&#x72C0;&#x614B;</td>
+      <td style="text-align:left">&#x6301;&#x7E8C;&#x7531; <a href="https://rustwasm.github.io/">Rust / Wasm Working Group</a> &#x7DAD;&#x8B77;&#x4E2D;</td>
+      <td
+      style="text-align:left">&#x6301;&#x7E8C;&#x7531; <a href="https://rustwasm.github.io/">Rust / Wasm Working Group</a> &#x7DAD;&#x8B77;&#x4E2D;</td>
+        <td
+        style="text-align:left">GitHub Repo &#x5DF2;&#x7D93;&#x516D;&#x500B;&#x6708;&#x4EE5;&#x4E0A;&#x6C92;&#x6709;&#x52D5;&#x975C;&#x4E86;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x958B;&#x767C;&#x9AD4;&#x9A57;</td>
+      <td style="text-align:left">&#x9084;&#x53EF;&#x4EE5;&#xFF0C;&#x9700;&#x8981;&#x642D;&#x914D; Webpack</td>
+      <td
+      style="text-align:left">&#x592A;&#x904E;&#x5E95;&#x5C64;&#xFF0C;&#x4F60;&#x9700;&#x8981;&#x5BEB;&#x4E00;&#x8173;&#x672C;&#x4F86;&#x512A;&#x5316;&#x958B;&#x767C;&#x9AD4;&#x9A57;</td>
+        <td
+        style="text-align:left">&#x53EF;&#x4EE5;&#x52D5;&#xFF01;&#x53E6;&#x5916;&#x7121;&#x9700;&#x5916;&#x90E8;&#x5957;&#x4EF6;&#x652F;&#x63F4;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x672C;&#x5730;&#x7AEF;&#x7684;&#x4F3A;&#x670D;&#x5668; (Local Server)</td>
+      <td
+      style="text-align:left">&#x642D;&#x914D; <code>webpack</code> &#x63D2;&#x4EF6;</td>
+        <td style="text-align:left">&#x4E0D;&#x652F;&#x63F4;</td>
+        <td style="text-align:left">&#x652F;&#x63F4;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x7576;&#x6A94;&#x6848;&#x88AB;&#x66F4;&#x52D5;&#xFF0C;&#x81EA;&#x52D5;&#x91CD;&#x7DE8;&#x8B6F;</td>
+      <td
+      style="text-align:left">&#x642D;&#x914D; <code>webpack</code> &#x63D2;&#x4EF6;</td>
+        <td style="text-align:left">&#x4E0D;&#x652F;&#x63F4;</td>
+        <td style="text-align:left">&#x652F;&#x63F4;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x7121;&#x982D;&#x700F;&#x89BD;&#x5668;&#x6E2C;&#x8A66;</td>
+      <td style="text-align:left"><a href="https://rustwasm.github.io/docs/wasm-pack/commands/test.html">Supported</a>
+      </td>
+      <td style="text-align:left"><a href="https://rustwasm.github.io/docs/wasm-bindgen/wasm-bindgen-test/index.html">Supported</a>
+      </td>
+      <td style="text-align:left"><a href="https://github.com/koute/cargo-web#features">Supported</a>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x652F;&#x63F4;&#x7684;&#x76EE;&#x6A19;&#x7A0B;&#x5F0F;&#x78BC;</td>
+      <td
+      style="text-align:left">
+        <ul>
+          <li><code>wasm32-unknown-unknown</code>
+          </li>
+        </ul>
+        </td>
+        <td style="text-align:left">
+          <ul>
+            <li><code>wasm32-unknown-unknown</code>
+            </li>
+          </ul>
+        </td>
+        <td style="text-align:left">
+          <ul>
+            <li><code>wasm32-unknown-unknown</code>
+            </li>
+            <li><code>wasm32-unknown-emscripten</code>
+            </li>
+            <li><code>asmjs-unknown-emscripten</code>
+            </li>
+          </ul>
+        </td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><code>web-sys</code>
+      </td>
+      <td style="text-align:left">&#x76F8;&#x5BB9;</td>
+      <td style="text-align:left">&#x76F8;&#x5BB9;</td>
+      <td style="text-align:left">&#x4E0D;&#x76F8;&#x5BB9;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"><code>stdweb</code>
+      </td>
+      <td style="text-align:left">&#x76F8;&#x5BB9;</td>
+      <td style="text-align:left">&#x76F8;&#x5BB9;</td>
+      <td style="text-align:left">&#x76F8;&#x5BB9;</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">&#x7BC4;&#x4F8B;&#x7528;&#x6CD5;</td>
+      <td style="text-align:left"><a href="https://github.com/yewstack/yew-wasm-pack-minimal">&#x65B0;&#x624B;&#x6A21;&#x677F;</a>
+      </td>
+      <td style="text-align:left">Yew &#x7BC4;&#x4F8B;&#x7684;<a href="https://github.com/yewstack/yew/blob/master/examples/build_all.sh">&#x7DE8;&#x8B6F;&#x8173;&#x672C;</a>
+      </td>
+      <td style="text-align:left">Yew &#x7BC4;&#x4F8B;&#x7684;<a href="https://github.com/yewstack/yew/blob/master/examples/build_all.sh">&#x7DE8;&#x8B6F;&#x8173;&#x672C;</a>
+      </td>
+    </tr>
+  </tbody>
+</table></span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#rust">Rust</a></li><li><a href="#wasm-編譯工具"><strong>Wasm 編譯工具</strong></a><ul class="toc-headings"><li><a href="#wasm-packhttpsrustwasmgithubiodocswasm-pack"><a href="https://rustwasm.github.io/docs/wasm-pack/"><strong><code>wasm-pack</code></strong></a></a></li><li><a href="#wasm-bindgenhttpsrustwasmgithubiodocswasm-bindgen"><a href="https://rustwasm.github.io/docs/wasm-bindgen/"><strong><code>wasm-bindgen</code></strong></a></a></li><li><a href="#cargo-webhttpsgithubcomkoutecargo-web"><a href="https://github.com/koute/cargo-web"><strong><code>cargo-web</code></strong></a></a></li><li><a href="#比較">比較</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

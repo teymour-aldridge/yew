@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>getting-started/build-a-sample-app · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="# 第一个简单的 App"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="getting-started/build-a-sample-app · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="# 第一个简单的 App"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/getting-started/build-a-sample-app">English</a></li><li><a href="/docs/zh-TW/getting-started/build-a-sample-app">繁體中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">getting-started/build-a-sample-app</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="第一个简单的-app"></a><a href="#第一个简单的-app" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>第一个简单的 App</h1>
+<p>首先创建一个二进制项目:</p>
+<pre><code class="hljs css language-bash">cargo new --bin yew-app &amp;&amp; <span class="hljs-built_in">cd</span> yew-app
+</code></pre>
+<p>添加 <code>yew</code> 到你的依赖库中（<a href="https://docs.rs/yew">这里</a> 可以查看最新版本的 Yew）</p>
+<p>{% code title=&quot;Cargo.toml&quot; %}</p>
+<pre><code class="hljs css language-text">[package]
+name = "yew-app"
+version = "0.1.0"
+authors = ["Yew App Developer <name@example.com>"]
+edition = "2018"
+
+[dependencies]
+yew = { version = "0.14.3", features = ["std_web"] }
+</code></pre>
+<p>{% endcode %}</p>
+<p>将这份代码复制到你的 <code>src/main.rs</code> 文件中:</p>
+<p>{% code title=&quot;src/main.rs&quot; %}</p>
+<pre><code class="hljs css language-rust">use yew::prelude::*;
+
+struct Model {
+    link: ComponentLink&lt;Self&gt;,
+    value: i64,
+}
+
+enum Msg {
+    AddOne,
+}
+
+impl Component for Model {
+    type Message = Msg;
+    type Properties = ();
+    fn create(_: Self::Properties, link: ComponentLink&lt;Self&gt;) -&gt; Self {
+        Self {
+            link,
+            value: 0,
+        }
+    }
+
+    fn update(&amp;mut self, msg: Self::Message) -&gt; ShouldRender {
+        match msg {
+            Msg::AddOne =&gt; self.value += 1
+        }
+        true // 指示组件应该重新渲染
+    }
+
+    fn view(&amp;self) -&gt; Html {
+        html! {
+            &lt;div&gt;
+                &lt;button onclick=self.link.callback(|_| Msg::AddOne)&gt;{ "+1" }&lt;/button&gt;
+                &lt;p&gt;{ self.value }&lt;/p&gt;
+            &lt;/div&gt;
+        }
+    }
+}
+
+fn main() {
+    yew::initialize();
+    App::&lt;Model&gt;::new().mount_to_body();
+}
+</code></pre>
+<p>{% endcode %}</p>
+<p>这份代码将构建你的称为 <code>Model</code> 的 <code>Component</code> 根组件，它会显示一个按钮，当你点击它时，<code>Model</code> 将会更新自己的状态。特别注意 <code>main()</code> 中的 <code>App::&lt;Model&gt;::new().mount_to_body()</code>，它会启动你的应用并将其挂载到页面的 <code>&lt;body&gt;</code> 标签中。如果你想使用任何动态属性来启动应用程序，则可以使用 <code>App::&lt;Model&gt;::new().mount_to_body_with_props(..)</code>。</p>
+<h2><a class="anchor" aria-hidden="true" id="运行你的应用程序"></a><a href="#运行你的应用程序" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>运行你的应用程序!</h2>
+<p>启动并运行你的应用的最快方式就是使用 <a href="https://github.com/koute/cargo-web"><code>cargo-web</code></a>。如果你还没有的话，请用 <code>cargo install cargo-web</code> 命令来安装这个工具然后通过运行下述命令来构建和启动一个开发服务器：</p>
+<pre><code class="hljs css language-bash">cargo web start
+</code></pre>
+<p><code>cargo-web</code> 将会自动为你添加 <code>wasm32-unknown-unknown</code> 作为目标代码，然后构建你的应用，你的应用将默认在 <a href="http://[::1]:8000">http://[::1]:8000</a> 被访问。可以通过 <code>cargo web start --help</code> 命令来获取更多选项和帮助。</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#运行你的应用程序">运行你的应用程序!</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

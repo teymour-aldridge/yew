@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>advanced-topics/optimizations · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Make your app faster"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="advanced-topics/optimizations · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="Make your app faster"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/advanced-topics/optimizations">English</a></li><li><a href="/docs/zh-TW/advanced-topics/optimizations">繁體中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">advanced-topics/optimizations</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" id="性能优化与最佳实践"></a><a href="#性能优化与最佳实践" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>性能优化与最佳实践</h1>
+<h2><a class="anchor" aria-hidden="true" id="neq_assign"></a><a href="#neq_assign" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>neq_assign</h2>
+<p>当组件从它的父组件接收 props 时，<code>change</code> 方法将被调用。除了允许你更新组件的状态，还允许你返回一个布尔类型的值 <code>ShouldRender</code> 来指示组件是否应该响应 props 的更改而重新渲染自身。</p>
+<p>重新渲染的开销很大，你应该尽量避免。一个通用的法则是，你只应该在 props 实际更改时重新渲染。以下代码块展示了此法则，如果 props 和先前的 props 不同，则返回 <code>true</code>：</p>
+<pre><code class="hljs css language-rust"><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">change</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, props: Self::Properties) -&gt; ShouldRender {
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span>.props != &amp;props {
+        *<span class="hljs-keyword">self</span>.props = props;
+        <span class="hljs-literal">true</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-literal">false</span>
+    }
+}
+</code></pre>
+<p>但是我们可以更进一步！对于任何实现了 <code>PartialEq</code> 的项，可以使用一个 trait 和一个 blanket implementation 将这六行样板代码减少到一行。</p>
+<p>{% code title=&quot;neq_assign.rs&quot; %}</p>
+<pre><code class="hljs css language-rust"><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">NeqAssign</span></span> {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">neq_assign</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, new: <span class="hljs-keyword">Self</span>) -&gt; ShouldRender;
+}
+<span class="hljs-keyword">impl</span>&lt;T: <span class="hljs-built_in">PartialEq</span>&gt; NeqAssign <span class="hljs-keyword">for</span> T {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">neq_assign</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, new: T) -&gt; ShouldRender {
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">self</span> != &amp;new {
+            *<span class="hljs-keyword">self</span> = new;
+            <span class="hljs-literal">true</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-literal">false</span>
+        }
+    }
+}
+
+<span class="hljs-comment">// ...</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">change</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, props: Self::Properties) -&gt; ShouldRender {
+    <span class="hljs-keyword">self</span>.props.neq_assign(props)
+}
+</code></pre>
+<p>{% endcode %}</p>
+<p>该 trait 称为 <code>NeqAssign</code> 是因为如果目标值和新值不相等，它将赋为新值。</p>
+<p>这比简单的实现还要短：</p>
+<pre><code class="hljs css language-rust"><span class="hljs-comment">// 不要这样做，除非你无法避免。</span>
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">change</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>, props: Self::Properties) -&gt; ShouldRender {
+    <span class="hljs-keyword">self</span>.props = props;
+    <span class="hljs-literal">true</span>
+}
+</code></pre>
+<p>你不仅限在 <code>change</code> 函数中使用它。通常，在 <code>update</code> 函数中执行此操作也是有意义的，尽管性能提升在那里不太明显。</p>
+<h2><a class="anchor" aria-hidden="true" id="wee_alloc"></a><a href="#wee_alloc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>wee_alloc</h2>
+<p><a href="https://github.com/rustwasm/wee_alloc">wee_alloc</a> 是一个比 Rust 二进制文件中通常使用的分配器还小得多的微型分配器。用这个分配器来替代默认的分配器将使 WASM 文件体积更小，但会牺牲速度和内存开销。</p>
+<p>对比不包含默认分配器换取的体积大小，牺牲的速度和内存开销是微不足道的。较小的文件体积意味着你的页面将加载更快，因此通常建议使用此分配器而不是默认分配器，除非你的应用程序会执行一些繁重的内存分配任务。</p>
+<pre><code class="hljs css language-rust"><span class="hljs-comment">// 将 `wee_alloc` 作为全局分配器</span>
+<span class="hljs-meta">#[global_allocator]</span>
+<span class="hljs-keyword">static</span> ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="rc"></a><a href="#rc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RC</h2>
+<p>为了避免在重新渲染时为了创建 props 而克隆大块数据，我们可以使用智能指针来只克隆指针。如果在 props 和子组件中使用 <code>Rc&lt;_&gt;</code> 而不是普通未装箱的值，则可以延迟克隆直到需要修改子组件中的数据为止，在该组件中可以使用 <code>Rc::make_mut</code> 来对要更改数据进行克隆和获取可变引用。通过在要修改前不进行克隆，子组件可以在几乎没有性能成本的情况下拒绝与它们在 <code>Component::change</code> 中拥有状态的 props 相同的 props，这与数据本身需要先复制到父级 props 结构体中，然后在子级中进行比较和拒绝的情况相反。</p>
+<p>对于不是 <code>Copy</code> 类型的数据，这种优化是最有用的。如果你能轻松地拷贝数据，那么将其放入智能指针中可能是不值得的。对于可以包含大量数据的结构，例如 <code>Vec</code>，<code>HashMap</code> 和 <code>String</code>，这种优化应该是值得的。</p>
+<p>如果子组件从不更新组件的值，则这种优化效果最好，如果父组件很少更新组件的值，则效果更好。这使得 <code>Rc&lt;_&gt;s</code> 是包装纯组件属性值的不错选择。</p>
+<h2><a class="anchor" aria-hidden="true" id="视图函数"></a><a href="#视图函数" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>视图函数</h2>
+<p>出于代码可读性的原因，将 <code>html!</code> 各个部分的代码迁移到他们自己的函数中通常是有意义的，这样就可以避免在深层嵌套的 HTML 中出现代码块向右偏移。</p>
+<h2><a class="anchor" aria-hidden="true" id="纯组件--函数式组件"></a><a href="#纯组件--函数式组件" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>纯组件 / 函数式组件</h2>
+<p>纯组件是不会修改它们状态的组件，它们仅展示内容和向普通可变组件传递消息。它们与视图函数不同之处在于他们可以使用组件语法（<code>&lt;SomePureComponent /&gt;</code>）而不是表达式语法（<code>{some_view_function()}</code>）来在 <code>html!</code> 宏中使用，并且根据它们的实现，它们可以被记忆化 - 使用前面提到的 <code>neq_assign</code> 逻辑来防止因为相同的 props 而重新渲染。</p>
+<p>Yew 没有原生支持纯组件或者函数式组件，但是可以通过外部库获取它们。</p>
+<p>函数式组件尚不存在，但是从理论上来讲，可以通过使用 proc 宏和标注函数生成纯组件。</p>
+<h2><a class="anchor" aria-hidden="true" id="keyed-dom-nodes-when-they-arrive"></a><a href="#keyed-dom-nodes-when-they-arrive" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Keyed DOM nodes when they arrive</h2>
+<h2><a class="anchor" aria-hidden="true" id="使用-cargo-workspaces-进行编译速度优化"></a><a href="#使用-cargo-workspaces-进行编译速度优化" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>使用 Cargo Workspaces 进行编译速度优化</h2>
+<p>可以说，使用 Yew 的最大缺点是编译时间长。编译时间似乎与 <code>html!</code> 宏块中的代码量相关。对于较小的项目，这通常不是什么大问题，但是对于跨多个页面的 web 应用程序，将代码拆分为多个 crates 以最大程度地减少编译器要做的工作通常是有意义的。</p>
+<p>你应该尝试让主 crate 处理路由和页面选择，将所有公用的代码移动到另一个 crate，然后为每一个页面创建一个不同的 crate，其中每个页面可能是一个不同的组件，或者只是一个产生 <code>Html</code> 的大函数。在最好的情况下，你将从重新构建所有代码到只重新构建主 crate 和一个页面的 crate。在最糟糕的情况下，当你在“公共” crate 中编辑内容时，你将回到起点：编译所有依赖此公用 crate 的代码，这可能就是除此之外的所有代码。</p>
+<p>如果你的主 crate 过于庞大，或者你想在深层嵌套的页面（例如，在另一个页面顶部渲染的页面）中快速迭代，则可以使用一个示例 crate 创建一个更简单的主页面实现并在之上渲染你正在开发的组件。</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#neq_assign">neq_assign</a></li><li><a href="#wee_alloc">wee_alloc</a></li><li><a href="#rc">RC</a></li><li><a href="#视图函数">视图函数</a></li><li><a href="#纯组件--函数式组件">纯组件 / 函数式组件</a></li><li><a href="#keyed-dom-nodes-when-they-arrive">Keyed DOM nodes when they arrive</a></li><li><a href="#使用-cargo-workspaces-进行编译速度优化">使用 Cargo Workspaces 进行编译速度优化</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

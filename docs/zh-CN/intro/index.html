@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>简介 · Yew Docs</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Yew 是什么？"/><meta name="docsearch:language" content="zh-CN"/><meta property="og:title" content="简介 · Yew Docs"/><meta property="og:type" content="website"/><meta property="og:url" content="https://yew.rs/"/><meta property="og:description" content="## Yew 是什么？"/><meta property="og:image" content="https://yew.rs/img/Rollup.jpg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://yew.rs/img/Rollup.jpg"/><link rel="shortcut icon" href="/img/logo.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,700"/><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/zh-CN"><img class="logo" src="/img/logo.png" alt="Yew Docs"/><h2 class="headerTitleWithLogo">Yew Docs</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/yewstack/yew/releases" target="_self">Changelog</a></li><li class=""><a href="https://docs.rs/yew" target="_self">API</a></li><li class=""><a href="https://discord.gg/VQck8X4" target="_self">Discord</a></li><span><li><a id="languages-menu" href="#"><img class="languages-icon" src="/img/language.svg" alt="Languages icon"/>中文</a><div id="languages-dropdown" class="hide"><ul id="languages-dropdown-items"><li><a href="/docs/en/intro">English</a></li><li><a href="/docs/zh-TW/intro">繁體中文</a></li></ul></div></li><script>
+        const languagesMenuItem = document.getElementById("languages-menu");
+        const languagesDropDown = document.getElementById("languages-dropdown");
+        languagesMenuItem.addEventListener("click", function(event) {
+          event.preventDefault();
+
+          if (languagesDropDown.className == "hide") {
+            languagesDropDown.className = "visible";
+          } else {
+            languagesDropDown.className = "hide";
+          }
+        });
+      </script></span></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Getting Started</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Getting Started</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/docs/zh-CN/intro">简介</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">简介</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="yew-是什么？"></a><a href="#yew-是什么？" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Yew 是什么？</h2>
+<p><strong>Yew</strong> 是一个设计先进的 <a href="https://www.rust-lang.org/">Rust</a> 框架，目的是使用 <a href="https://webassembly.org/">WebAssembly</a> 来创建多线程的前端 web 应用。</p>
+<ul>
+<li><strong>基于组件的框架</strong>，可以轻松的创建交互式 UI。拥有 <a href="https://reactjs.org/">React</a> 或 <a href="https://elm-lang.org/">Elm</a> 等框架经验的开发人员在使用 Yew 时会感到得心应手。</li>
+<li><strong>高性能</strong> ，前端开发者可以轻易的将工作分流至后端来减少 DOM API 的调用，从而达到异常出色的性能。</li>
+<li><strong>支持与 Javascript 交互</strong> ，允许开发者使用 NPM 包，并与现有的 Javascript 应用程序结合。</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="加入我们-"></a><a href="#加入我们-" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>加入我们 😊</h3>
+<ul>
+<li>你可以在这里 <a href="https://github.com/yewstack/yew/issues">GitHub issues page</a> 报告 Bugs 或者是提出新的想法。</li>
+<li>我们欢迎 pull requests 。 如果你想要帮助我们，先参考下 <a href="https://github.com/yewstack/yew/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22">good first issues</a> 吧！</li>
+<li>我们的 <a href="https://discord.gg/VQck8X4">Discord chat</a> 非常的热闹，也是一个问问题和解决问题的好地方！</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="准备好开始了吗？"></a><a href="#准备好开始了吗？" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>准备好开始了吗？</h3>
+<p>点击下面的链接，来学习并编写你的第一个 Yew 前端 App ， 并通过丰富的社区示例项目来学习。</p>
+<p>{% page-ref page=&quot;getting-started/project-setup/&quot; %}</p>
+<h3><a class="anchor" aria-hidden="true" id="还没有完全信服？"></a><a href="#还没有完全信服？" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>还没有完全信服？</h3>
+<p>Yew 项目基于划时代的新技术，非常适合那些希望开发未来基础项目的开发者。接下来是一些我们相信 Yew 这样的框架将为成为未来 Web 开发的主流。</p>
+<h4><a class="anchor" aria-hidden="true" id="等等，为什么选用-webassembly"></a><a href="#等等，为什么选用-webassembly" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>等等，为什么选用 WebAssembly?</h4>
+<p>WebAssembly <em>(Wasm)</em> 是一种可移植的底层语言，并且可以由 Rust 编译而来。它在浏览器中可以以原生速度运行，还同时支持和 JavaScript 交互。这些在所有的主流浏览器中都已经提供。希望了解更多关于 WebAssembly 是如何为前端应用提速的，可以查看官方<a href="https://webassembly.org/docs/use-cases/">用例</a>.</p>
+<p>值得注意的是，Wasm（目前还）并不是提高 Web 应用性能的万金油（原文：A Silver Bullet）就目前来说，在 WebAssembly 中使用 DOM API 仍然比从 JavaScript 中调用要慢。但只是暂时性问题的，<a href="https://github.com/WebAssembly/interface-types/blob/master/proposals/interface-types/Explainer.md">WebAssembly Interface Types</a> 计划将解决这个问题。如果你想要了解更多关于这方面的信息，可以查看 Mozilla 的这篇<a href="https://hacks.mozilla.org/2019/08/webassembly-interface-types/">佳作</a> 。</p>
+<h4><a class="anchor" aria-hidden="true" id="好的，那为什么选用-rust-呢？"></a><a href="#好的，那为什么选用-rust-呢？" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>好的，那为什么选用 Rust 呢？</h4>
+<p>Rust 是一门运行速度超快，并且以他丰富的类型系统和可信赖的所有权模型而闻名的语言。尽管它的学习曲线非常的陡峭，但是带来的回报完全成正比！Rust 已经连续四年在 Stack Overflow 开发者调查报告中被评选为最受喜爱的编程语言：<a href="https://insights.stackoverflow.com/survey/2016#technology-most-loved-dreaded-and-wanted">2016</a>，<a href="https://insights.stackoverflow.com/survey/2017#most-loved-dreaded-and-wanted">2017</a>，<a href="https://insights.stackoverflow.com/survey/2018#technology-_-most-loved-dreaded-and-wanted-languages">2018</a> 和 <a href="https://insights.stackoverflow.com/survey/2019#technology-_-most-loved-dreaded-and-wanted-languages">2019</a>。</p>
+<p>Rust 同样可以用它丰富的类型系统和可信赖的所有权模型来帮助开发者编写出更加安全的代码。和那些在 JavaScript 中难以定位的竞争条件 Bug 们说再见吧！ 事实上，通过 Rust ，大部分的 Bugs 都将在项目上线之前的编写阶段被编译器发现。同时不用担心，当你的应用出现错误的时候，你仍然可以在浏览器的调试控制台中获得你 Rust 代码的完整的错误栈追踪。</p>
+<h4><a class="anchor" aria-hidden="true" id="同类的项目？"></a><a href="#同类的项目？" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>同类的项目？</h4>
+<p>我们非常愿意和其他的类似项目交流想法，并且相信通过这种方式，我们可以互相扶持进步来发挥出这个新技术的潜力。如果你对 Yew 没有兴趣，你可能会喜欢这些项目。</p>
+<ul>
+<li><a href="https://github.com/chinedufn/percy">Percy</a> - <em>&quot;A modular toolkit for building isomorphic web apps with Rust + WebAssembly&quot;</em></li>
+<li><a href="https://github.com/seed-rs/seed">Seed</a> - <em>&quot;A Rust framework for creating web apps&quot;</em></li>
+</ul>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated on 7/10/2020</em></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#yew-是什么？">Yew 是什么？</a><ul class="toc-headings"><li><a href="#加入我们-">加入我们 😊</a></li><li><a href="#准备好开始了吗？">准备好开始了吗？</a></li><li><a href="#还没有完全信服？">还没有完全信服？</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Support</h5><a href="https://issuehunt.io/r/yewstack/yew" target="_blank" rel="noreferrer noopener">Fund Issues</a><a href="https://opencollective.com/yew" target="_blank" rel="noreferrer noopener">Sponsor Project</a></div><div><h5>Participate</h5><a href="https://github.com/yewstack/yew" target="_blank" rel="noreferrer noopener">Github</a><a href="https://discord.gg/VQck8X4" target="_blank" rel="noreferrer noopener">Discord</a><a href="https://twitter.com/" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/jetli/awesome-yew" target="_blank" rel="noreferrer noopener">Yew Awesome</a></div></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
