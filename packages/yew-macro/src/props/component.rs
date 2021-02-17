@@ -181,6 +181,7 @@ impl ComponentProps {
         }
     }
 }
+
 impl Parse for ComponentProps {
     fn parse(input: ParseStream) -> syn::Result<Self> {
         if WithProps::contains_with_expr(&input.fork()) {
