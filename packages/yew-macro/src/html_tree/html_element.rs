@@ -307,7 +307,7 @@ impl ToTokens for HtmlElement {
     }
 }
 
-struct DynamicName {
+pub struct DynamicName {
     at: Token![@],
     expr: Option<Block>,
 }
