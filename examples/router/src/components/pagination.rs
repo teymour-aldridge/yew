@@ -53,7 +53,7 @@ impl Pagination {
 
         html! {
             <li>
-                <a class=classes!("pagination-link", is_current_class) aria-label=format!("Goto page {}", to_page) onclick=onclick>
+                <a href="javascript:void(0)" class=classes!("pagination-link", is_current_class) aria-label=format!("Goto page {}", to_page) onclick=onclick>
                     { to_page }
                 </a>
             </li>
@@ -113,13 +113,13 @@ impl Pagination {
 
         html! {
             <>
-                <a class="pagination-previous"
+                <a href="javascript:void(0)" class="pagination-previous"
                     disabled=page==1
                     onclick=on_switch_page.reform(move |_| page - 1)
                 >
                     { "Previous" }
                 </a>
-                <a class="pagination-next"
+                <a href="javascript:void(0)" class="pagination-next"
                     disabled=page==total_pages
                     onclick=on_switch_page.reform(move |_| page + 1)
                 >
