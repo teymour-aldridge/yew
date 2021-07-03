@@ -48,3 +48,5 @@ members = [
   # Release tools
   "packages/changelog",
 ]
+
+exclude = ["packages/yew-macro-impl"]

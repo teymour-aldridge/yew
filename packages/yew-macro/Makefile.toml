@@ -7,3 +7,11 @@ args = ["test"]
 [tasks.test-overwrite]
 extend = "test"
 env = { TRYBUILD = "overwrite" }
+
+[tasks.update-wasm]
+script_runner = "@duckscript"
+script = '''
+cd ../yew-macro-impl
+cargo build --release --target wasm32-unknown-unknown
+mv target/wasm32-unknown-unknown/release/yew_macro_impl.wasm ../yew-macro/src
+'''
